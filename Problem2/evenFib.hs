@@ -7,7 +7,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 -}
 
 
-main = print (fib 10)
+main = print (evenFibMaxSum 4000000)
 
 -- Fibonacci naive
 fib :: Int -> Int
