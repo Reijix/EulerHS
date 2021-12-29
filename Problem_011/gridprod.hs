@@ -66,3 +66,6 @@ productStep n x y dir grid = case dir of
   DUp -> (grid!!y)!!x * (grid!!(y+1))!!x * (grid!!(y+2))!!x * (grid!!(y+3))!!x
   DDown -> (grid!!y)!!x * (grid!!(y-1))!!x * (grid!!(y-2))!!x * (grid!!(y-3))!!x
   DDiag -> (grid!!y)!!x * (grid!!(y+1))!!(x+1) * (grid!!(y+2))!!(x+2) * (grid!!(y+3))!!(x+3)
+
+indices :: [(Int, Int)]
+indices = [(x,y) | x <- [0..20], y <- [0..20]]
