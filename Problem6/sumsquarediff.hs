@@ -11,6 +11,6 @@ sumTo :: Int -> Int
 sumTo x = sum [1..x]
 
 squareSumTo :: Int -> Int
-squareSumTo x = sum (map (\p -> square p) [1..x])
+squareSumTo x = sum (map square [1..x])
 
 problem n = square (sumTo n) - squareSumTo n

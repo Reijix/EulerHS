@@ -18,10 +18,6 @@ fib x = fib (x-1) + fib (x-2)
 -- Fibonacci elegant
 fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
 
--- Checks if given int is even
-isEven :: Int -> Bool
-isEven x = x `mod` 2 == 0
-
 -- Calculates the sum of all even fibonacci numbers that are smaller than x (Here 4 000 000)
 evenFibMaxSum :: Int -> Int
-evenFibMaxSum x = sum (filter isEven (takeWhile (<x) fibs))
+evenFibMaxSum x = sum (filter even (takeWhile (<x) fibs))
