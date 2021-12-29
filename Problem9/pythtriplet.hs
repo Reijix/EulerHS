@@ -14,7 +14,7 @@ main = print (problem 1000)
 
 problem :: Int -> Int
 problem n = let
-    triplets = filter (checkSum n) (findPyTriplets n)
+    triplets = findPyTriplets n
     empty = null (findPyTriplets n)
     triplet = if empty then (0,0,0) else head triplets
     prod (a,b,c) = a*b*c
@@ -23,13 +23,9 @@ problem n = let
 findPyTriplets :: Int -> [(Int, Int, Int)]
 findPyTriplets n = filter isPythagorean (getTriplets n)
 
--- Checks if sum of a triplet equals n
-checkSum :: Int -> (Int, Int, Int) -> Bool
-checkSum n (a,b,c) = a+b+c == n
-
 isPythagorean :: (Int, Int, Int) -> Bool
 isPythagorean (a,b,c) = a*a + b*b == c*c
 
--- Gets all triplets that have a sum below n (performance optimization)
+-- Gets all triplets with a sum of n 
 getTriplets :: Int -> [(Int, Int, Int)]
-getTriplets n = concatMap (\ (a,b) -> map (a,b,) [b+1..(n-a-b)]) (concatMap (\a -> map (a,) [(a+1)..(n-a)]) [1..n-2])
+getTriplets n = concatMap (\a -> map (\b -> (a,b, n-a-b)) [(a+1)..(n-a)]) [1..n-2]
