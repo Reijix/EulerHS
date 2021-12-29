@@ -9,6 +9,6 @@ main = print (primes !! 10002)
 
 -- Reusing our primes list from Problem 3
 primes :: [Int]
-primes = 2 : 3 : sieve [5,7..]
+primes = 2 : sieve [3,5..]
   where sieve (p:ps) = p : sieve (filter (\x -> x `mod` p /= 0) ps)
         sieve _ = []

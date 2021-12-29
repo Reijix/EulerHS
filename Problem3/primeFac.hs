@@ -10,7 +10,7 @@ main = print (last (getPrimeFactors 600851475143))
 
 -- Infinite list of primes calculated with the sieve erathostenes
 primes :: [Int]
-primes = 2 : 3 : sieve [5,7..]
+primes = 2 : sieve [3,5..]
   where sieve (p:ps) = p : sieve (filter (\x -> x `mod` p /= 0) ps)
         sieve _ = []
 
@@ -22,7 +22,7 @@ primeFactor x = Data.Maybe.fromMaybe 0 nextprime
 
 -- Gets all PrimeFactors of the given number
 getPrimeFactors :: Int -> [Int]
-getPrimeFactors n = map (snd) (takeWhile (\(x,y) -> y /= 0) (primeFactors n))
+getPrimeFactors n = map snd (takeWhile (\(x,y) -> y /= 0) (primeFactors n))
   where primeFactors n = tail (iterate nextPrimeFactor (n, 1))
         nextPrimeFactor (x,y) | primeFactor x == 0 = (0,0)
                               | otherwise = (x `div` primeFactor x, primeFactor x)
