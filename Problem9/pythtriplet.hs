@@ -1,6 +1,5 @@
-{-# LANGUAGE TupleSections #-}
 module Main where
-import Data.List
+import           Data.List
 {-
 A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
 
@@ -26,6 +25,6 @@ findPyTriplets n = filter isPythagorean (getTriplets n)
 isPythagorean :: (Int, Int, Int) -> Bool
 isPythagorean (a,b,c) = a*a + b*b == c*c
 
--- Gets all triplets with a sum of n 
+-- Gets all triplets with a sum of n
 getTriplets :: Int -> [(Int, Int, Int)]
 getTriplets n = concatMap (\a -> map (\b -> (a,b, n-a-b)) [(a+1)..(n-a)]) [1..n-2]

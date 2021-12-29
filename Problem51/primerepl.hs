@@ -17,7 +17,7 @@ main = print 0
 -- Transform int into a list of single digit integers
 numToList :: Int -> [Int]
 numToList x | x < 10 = [x]
-            | otherwise = x `mod` 10 : (numToList (x `div` 10))
+            | otherwise = x `mod` 10 : numToList (x `div` 10)
 
 -- Extract third member of tuple
 sel3 (_,_,x) = x
@@ -31,10 +31,10 @@ listToNum ps = sel3 (helper (ps, 1, 0))
 -- Function that replaces all digits at indices in xs with number
 replaceIdxWith :: [Int] -> [Int] -> Int -> [Int]
 replaceIdxWith ps xs n = let idxList = zip ps [0..]
-                         in map (\p -> case () of  
-                                      _| elem (snd p) xs -> n 
+                         in map (\p -> case () of
+                                      _| snd p `elem` xs -> n
                                        | otherwise -> fst p
-                                ) idxList 
+                                ) idxList
 
 -- Gets possible different variations of a n long index list
 -- example: getVariations[2] = [[0],[1],[0,1]]
