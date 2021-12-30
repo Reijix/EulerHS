@@ -1,3 +1,4 @@
+{-# LANGUAGE TupleSections #-}
 module Main where
 import Distribution.Fields.LexerMonad (getPos)
 main = print 0
@@ -35,7 +36,8 @@ data Direction = DLeft
                 | DRight
                 | DUp
                 | DDown
-                | DDiag deriving (Show, Eq)
+                | DDiagr
+                | DDiagl deriving (Show, Eq)
 
 grid :: [[Int]]
 grid = [[08,02,22,97,38,15,00,40,00,75,04,05,07,78,52,12,50,77,91,08],
@@ -64,21 +66,22 @@ productStep :: Int -> Int -> Int -> Direction -> [[Int]] -> Int
 productStep n x y dir grid = case dir of
   DLeft -> grid!!y!!x * grid!!y!!(x-1) * grid!!y!!(x-2) * grid!!y!!(x-3)
   DRight -> grid!!y!!x * grid!!y!!(x+1) * grid!!y!!(x+2) * grid!!y!!(x+3)
-  DUp -> grid!!y!!x * grid!!(y+1)!!x * grid!!(y+2)!!x * grid!!(y+3)!!x
-  DDown -> grid!!y!!x * grid!!(y-1)!!x * grid!!(y-2)!!x * grid!!(y-3)!!x
-  DDiag -> grid!!y!!x * grid!!(y+1)!!(x+1) * grid!!(y+2)!!(x+2) * grid!!(y+3)!!(x+3)
-
-indices :: [(Int, Int)]
-indices = [(x,y) | x <- [0..20], y <- [0..20]]
+  DUp -> grid!!y!!x * grid!!(y-1)!!x * grid!!(y-2)!!x * grid!!(y-3)!!x
+  DDown -> grid!!y!!x * grid!!(y+1)!!x * grid!!(y+2)!!x * grid!!(y+3)!!x
+  DDiagr -> grid!!y!!x * grid!!(y+1)!!(x+1) * grid!!(y+2)!!(x+2) * grid!!(y+3)!!(x+3)
+  DDiagl -> grid!!y!!x * grid!!(y+1)!!(x-1) * grid!!(y+2)!!(x-2) * grid!!(y+3)!!(x-3)
 
 -- Returns all directions possible with given indices
 getPossibleDirections :: Int -> Int -> Int -> Int -> [Direction]
 getPossibleDirections n bounds x y =
-  [DRight | x < bounds - n]
-  ++ [DDown | y < bounds - n]
-  ++ [DDiag | y < bounds - n && x < bounds - n]
+  [DRight | x + n - 1 < bounds]
+  ++ [DDown | y + n - 1 < bounds]
+  ++ [DDiagr | y + n - 1 < bounds && x + n - 1 < bounds]
+  ++ [DDiagl | y + n - 1 < bounds && x - n + 1 > 0]
 
 getTuples :: [(Int, Int)]
 getTuples = [(a,b) | a <- [0..19], b <- [0..19]]
 
-problem = maximum (concatMap (\a -> ) getTuples)
+problem = maximum (map (\(a,b,d) -> productStep 4 a b d grid) dirTriples)
+
+dirTriples = concatMap (\(a,b) -> map (a,b,) (getPossibleDirections 4 20 a b) ) getTuples
