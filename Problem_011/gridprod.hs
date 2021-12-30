@@ -1,4 +1,5 @@
 module Main where
+import Distribution.Fields.LexerMonad (getPos)
 main = print 0
 
 {-
@@ -34,7 +35,7 @@ data Direction = DLeft
                 | DRight
                 | DUp
                 | DDown
-                | DDiag
+                | DDiag deriving (Show, Eq)
 
 grid :: [[Int]]
 grid = [[08,02,22,97,38,15,00,40,00,75,04,05,07,78,52,12,50,77,91,08],
@@ -60,12 +61,24 @@ grid = [[08,02,22,97,38,15,00,40,00,75,04,05,07,78,52,12,50,77,91,08],
 
 -- Calculates the product of n cells in a given direction starting at coordinates x y, this function doesnt check bounds!!
 productStep :: Int -> Int -> Int -> Direction -> [[Int]] -> Int
-productStep n x y dir grid = case dir of  
-  DLeft -> (grid!!y)!!x * (grid!!y)!!(x-1) * (grid!!y)!!(x-2) * (grid!!y)!!(x-3)
-  DRight -> (grid!!y)!!x * (grid!!y)!!(x+1) * (grid!!y)!!(x+2) * (grid!!y)!!(x+3)
-  DUp -> (grid!!y)!!x * (grid!!(y+1))!!x * (grid!!(y+2))!!x * (grid!!(y+3))!!x
-  DDown -> (grid!!y)!!x * (grid!!(y-1))!!x * (grid!!(y-2))!!x * (grid!!(y-3))!!x
-  DDiag -> (grid!!y)!!x * (grid!!(y+1))!!(x+1) * (grid!!(y+2))!!(x+2) * (grid!!(y+3))!!(x+3)
+productStep n x y dir grid = case dir of
+  DLeft -> grid!!y!!x * grid!!y!!(x-1) * grid!!y!!(x-2) * grid!!y!!(x-3)
+  DRight -> grid!!y!!x * grid!!y!!(x+1) * grid!!y!!(x+2) * grid!!y!!(x+3)
+  DUp -> grid!!y!!x * grid!!(y+1)!!x * grid!!(y+2)!!x * grid!!(y+3)!!x
+  DDown -> grid!!y!!x * grid!!(y-1)!!x * grid!!(y-2)!!x * grid!!(y-3)!!x
+  DDiag -> grid!!y!!x * grid!!(y+1)!!(x+1) * grid!!(y+2)!!(x+2) * grid!!(y+3)!!(x+3)
 
 indices :: [(Int, Int)]
 indices = [(x,y) | x <- [0..20], y <- [0..20]]
+
+-- Returns all directions possible with given indices
+getPossibleDirections :: Int -> Int -> Int -> Int -> [Direction]
+getPossibleDirections n bounds x y =
+  [DRight | x < bounds - n]
+  ++ [DDown | y < bounds - n]
+  ++ [DDiag | y < bounds - n && x < bounds - n]
+
+getTuples :: [(Int, Int)]
+getTuples = [(a,b) | a <- [0..19], b <- [0..19]]
+
+problem = maximum (concatMap (\a -> ) getTuples)
