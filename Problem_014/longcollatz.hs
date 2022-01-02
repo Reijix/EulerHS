@@ -16,6 +16,8 @@ Which starting number, under one million, produces the longest chain?
 NOTE: Once the chain starts the terms are allowed to go above one million.
 -}
 
+-- TODO
+
 main = print (problem 1000000)
 
 collatz :: Int -> Int
